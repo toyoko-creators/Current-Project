@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,9 +25,22 @@ Route::get('/user', function () {
 Route::post('userRegister', 'userOperateController@register');
 Route::post('userLogin', 'userOperateController@login');
 
+Route::post('Favregister', 'userOperateController@register');
+
+Route::post('AddTop', 'userOperateController@register');
+Route::post('Favregister', 'userOperateController@register');
+
 Route::get('/closet', function () {
     return view('closet');
 });
 Route::get('/favorite', function () {
     return view('favorite');
 });
+
+Route::get('/imageupload', function () {
+    return view('imageupload');
+});
+
+Route::post('closetbutton', 'ClosetOperateController@BottonSelector');
+
+Route::post('imageUpload', 'ImageUploadOperateController@register');

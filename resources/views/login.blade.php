@@ -9,7 +9,7 @@
     </head>
     <body>
         <div class="form-wrapper">
-            <h1>ログイン</h1>
+            <h1>My Coordination Editor</h1>
             @if(isset( $msg ))
             <p>{{$msg}}</p>
             @endif

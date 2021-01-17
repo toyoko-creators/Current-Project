@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration
+class CreateFavolistsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->string('email', 100)->unique();
-            $table->string('lastname', 50);
-            $table->string('firstname', 50);
-            $table->string('password', 256);
+        Schema::create('favolists', function (Blueprint $table) {
+            $table->string('email', 100);
+            $table->string('TopFile', 256)->references('ImageFile')->on('clothes')->onDelete('cascade');
+            $table->string('BottomFile', 256)->references('ImageFile')->on('clothes')->onDelete('cascade');
             $table->timestamps();
         });
-        
     }
 
     /**
@@ -31,7 +29,5 @@ class CreateUsersTable extends Migration
     public function down()
     {
         Schema::dropIfExists('favolists');
-        Schema::dropIfExists('clothes');
-        Schema::dropIfExists('users');
     }
 }

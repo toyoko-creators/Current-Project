@@ -40,8 +40,12 @@ class userOperateController extends Controller
         $selectuser = User::where('email',$request->email)
                          ->where('password',$request->password)
                          ->first();
-        if($selectuser != null)
+        if($selectuser != null){
+            // 値を保存
+            session('userid')->put();
+            session()->put('userid', $request->email);
             return view('closet', $selectuser);
+        }
         else
         {
             $data = [

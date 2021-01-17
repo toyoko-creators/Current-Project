@@ -4,13 +4,14 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Login</title>
+        <title>My Cordination Editor</title>
         <link rel="stylesheet" href="css/style.css" type="text/css">
     </head>
     <body>
         <div id="container">
             <div id="Menu_frame">
-                <form method="post">
+            <form action="closetbutton" method="POST">
+                {{ csrf_field() }}
                     <div class="button-normal">
                         <input type="submit" name="closet" value="クローゼット">
                     </div>
@@ -26,23 +27,15 @@
                     </div>
                 </form>
             </div>
-<!--
             <div id="Main_frame_tops">
+                @if(isset( $msg ))
+                <div>{{$msg}}</div>
+                @endif
                 <div class="slick01">
-                    <?php /* foreach ((array)$tops as $row) : ?>
-                        <img alt=" <?php echo $row["ImageFile"]; ?>" src="images/<?php echo $row["ImageFile"]; ?>.png">
-                    <?php endforeach; ?>
-                </div>
-            </div>
-            <div id="Main_frame_bottoms">
-                <div class="slick02">
-                    <?php foreach ((array)$bottoms as $row) : ?>
-                        <img alt=" <?php echo $row["ImageFile"]; ?>" src="images/<?php echo $row["ImageFile"]; ?>.png">
-                    <?php endforeach; */?>
+ 
                 </div>
             </div>
         </div>
--->
         <script src="js/jquery-3.5.1.js"></script>
         <script src="js/jquery-migrate-1.2.1.min.js"></script>
         <script src="js/slick.min.js"></script>
