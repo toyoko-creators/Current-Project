@@ -30,7 +30,7 @@ class ImageUploadOperateController extends Controller
             return view('/imageupload');
         }
         try{
-            $UpFile->storeAs(Storage::disk('local')->url("public/".$email."/".$weartype),$FileName);
+            $UpFile->storeAs("public/image/".$email."/".$weartype,$FileName);
             $data = [
                 'weartype'=>$request->weartype,
                 'message'=>"images/".$email."/".$weartype,$FileName

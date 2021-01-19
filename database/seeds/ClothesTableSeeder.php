@@ -3,6 +3,7 @@
 use App\Clothe;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Console\Command;
 
 class ClothesTableSeeder extends Seeder
 {
@@ -13,33 +14,32 @@ class ClothesTableSeeder extends Seeder
      */
     public function run()
     {
-        //追加
-        /*foreach(glob(storage_path("app/imagesDefault").'/*',GLOB_ONLYDIR ) as $userdir){//ユーザ名のフォルダ(フルパス)
-            echo "check dir : ".$userdir."\n";
+        foreach(glob(storage_path("app/imagesDefault").'/*',GLOB_ONLYDIR ) as $userdir){//ユーザ名のフォルダ(フルパス)
+            $this->command->info( "check dir : ".$userdir);
             foreach(glob(($userdir).'/*',GLOB_ONLYDIR ) as $weartypedir){//トップ、ボトムのフォルダ名探索
-                echo "check dir : ".$weartypedir."\n";
+                $this->command->info( "check dir : ".$weartypedir);
                 if(basename($weartypedir) !="Top" && basename($weartypedir) !="Bottom" ){continue;}//名前違いのものは無視
                 foreach(glob(($weartypedir).'/*',GLOB_NOSORT ) as $imagefile){//画像ファイル一覧取得
                     echo "\n";
-                    echo $imagefile;
+                    $this->command->info($imagefile);
                     echo "\n";
                     $uploadfileName = uniqid().".".pathinfo( $imagefile, PATHINFO_EXTENSION);
-                    $uploadfilepath = storage_path("/app/public".basename($userdir)."/".basename($weartypedir));
-                    echo "To   : ".$uploadfilepath."/".$uploadfileName."\n";
-                    echo "from : ".$imagefile."\n";
-                    echo "Upfilename : ".$uploadfileName."\n";
-                    $fromfile = Storage::get($imagefile);
-                    echo "Storage::get :Success\n";
+                    $uploadfilepath = storage_path("public/image/".basename($userdir)."/".basename($weartypedir));
+                    $this->command->info( "To   : ".$uploadfilepath."/".$uploadfileName);
+                    $this->command->info( "from : ".$imagefile);
+                    $this->command->info( "Upfilename : ".$uploadfileName);
+                    $fromfile = Storage::get(url(Storage::disk('local')->url("imageDefault/".basename($userdir).basename($weartypedir).basename($imagefile))));
+                    $this->command->info( "Storage::get :Success");
                     $fromfile->storeAs($uploadfilepath,$uploadfileName);
-                    echo "Storage::copy :Success\n";
+                    $this->command->info( "Storage::copy :Success\n");
                     Clothe::create([
                         'ImageFile'=>$uploadfileName,
                         'email'=>basename($userdir),
                         'WearType'=>basename($weartypedir)
                     ]);
-                    echo "Clothe::create :Success\n";
+                    $this->command->info( "Clothe::create :Success\n");
                 }
             }
-        }*/
+        }
     }
 }

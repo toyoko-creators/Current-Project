@@ -71,49 +71,44 @@ class ClosetOperateController extends Controller
 
     public function openPage(){
         $email = Session::get('userid');
-        $clothes = Clothe::select('ImageFile')
-        ->where('email', (string)$email);
-        if(!empty($clothes)){
-            $topclothes = $clothes->where('WearType',(string) 'Top')
-            ->get()
-            ->toArray();
-            foreach ($topclothes as $row){
-                if(!isset($slick1divValue)){
-                    $slick1divValue ="";
-                };
-                $targetfilepath = url(Storage::disk('local')->url("public/".$email.'/Top/'.$row['ImageFile']));
-                $slick1divValue .= '<div><img src="'.$targetfilepath.'" alt="'.$row['ImageFile'].'" </div>';
-            }
+        $topclothes = Clothe::select('ImageFile')
+        ->where('email', (string)$email)
+        ->where('WearType',(string) 'Top')
+        ->get()
+        ->toArray();
+        foreach ($topclothes as $row){
             if(!isset($slick1divValue)){
-                $slick1divValue ='<div class="slick01">no image</div>';
-            }else{
-                $slick1divValue ='<div class="slick01">'.$slick1divValue.'</div>';
-            }
-            $bottomclothes = $clothes->where('WearType',(string) 'Top')
-            ->get()
-            ->toArray();
-            foreach ($bottomclothes as $row){
-                if(!isset($slick2divValue)){
-                    $slick2divValue ="";
-                };
-                $targetfilepath = url(Storage::disk('local')->url("public/".$email.'/Bottom/'.$row['ImageFile']));
-                $slick2divValue .= '<div><img src="'.$targetfilepath.'" alt="'.$row['ImageFile'].'" </div>';
-            }
-            if(!isset($slick2divValue)){
-                $slick2divValue ='<div class="slick02">no image</div>';
-            }else{
-                $slick2divValue ='<div class="slick02">'.$slick2divValue.'</div>';
-            }
-            $data = [
-                'Topvalue'=>$slick1divValue,
-                'Bottomvalue'=>$slick2divValue
-            ];
-        }else{
-            $data = [
-                'Topvalue'=>'<div class="slick01">no image</div>',
-                'Bottomvalue'=>'<div class="slick02">no image</div>'
-            ];
+                $slick1divValue ="";
+            };
+            $targetfilepath = url(Storage::disk('local')->url("image/".$email."/Top/".$row['ImageFile']));
+            $slick1divValue .= '<img src="'.$targetfilepath.'" alt="'.$row['ImageFile'].'" >';
         }
+        if(!isset($slick1divValue)){
+            $slick1divValue ='<div class="slick01">no image</div>';
+        }else{
+            $slick1divValue ='<div class="slick01">'.$slick1divValue.'</div>';
+        }
+        $bottomclothes = Clothe::select('ImageFile')
+        ->where('email', (string)$email)
+        ->where('WearType',(string) 'Bottom')
+        ->get()
+        ->toArray();
+        foreach ($bottomclothes as $row){
+            if(!isset($slick2divValue)){
+                $slick2divValue ="";
+            };
+            $targetfilepath = url(Storage::disk('local')->url("image/".$email.'/Bottom/'.$row['ImageFile']));
+            $slick2divValue .= '<img src="'.$targetfilepath.'" alt="'.$row['ImageFile'].'">';
+        }
+        if(!isset($slick2divValue)){
+            $slick2divValue ='<div class="slick02">no image</div>';
+        }else{
+            $slick2divValue ='<div class="slick02">'.$slick2divValue.'</div>';
+        }
+        $data = [
+            'Topvalue'=>$slick1divValue,
+            'Bottomvalue'=>$slick2divValue
+        ];
         return view('closet',$data);
     }
  /*   public function openPage()
