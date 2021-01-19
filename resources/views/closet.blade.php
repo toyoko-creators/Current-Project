@@ -6,6 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>My Cordination Editor</title>
         <link rel="stylesheet" href="css/style.css" type="text/css">
+        <link rel="stylesheet" href="css/slick.css" type="text/css">
+        <link rel="stylesheet" href="css/slick-theme.css" type="text/css">
     </head>
     <body>
         <div id="container">
@@ -31,9 +33,12 @@
                 @if(isset( $msg ))
                 <div>{{$msg}}</div>
                 @endif
-                <div class="slick01">
- 
-                </div>
+                @if(isset( $Topvalue ))
+                    {!! $Topvalue !!}
+                @endif
+                @if(isset( $Bottomvalue ))
+                    {!! $Bottomvalue !!}
+                @endif
             </div>
         </div>
         <script src="js/jquery-3.5.1.js"></script>

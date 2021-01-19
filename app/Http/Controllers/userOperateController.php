@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Session;
 
 use App\User;
 use Illuminate\Http\Request;
@@ -42,9 +43,11 @@ class userOperateController extends Controller
                          ->first();
         if($selectuser != null){
             // 値を保存
-            session('userid')->put();
-            session()->put('userid', $request->email);
-            return view('closet', $selectuser);
+            Session::regenerate();
+            $data = [
+                'userid'=>Session::put('userid', $request->email)
+            ];
+            return view('/closet', $data);
         }
         else
         {

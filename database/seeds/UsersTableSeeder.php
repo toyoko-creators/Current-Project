@@ -12,14 +12,15 @@ class UsersTableSeeder extends Seeder
      */
     public function run(){
         User::truncate();
-        $i = 0;
-        $firstnamarray[] =["太郎","次郎","三郎","四郎"];
-        foreach($firstnamarray as $firstname){//ユーザ名のフォルダ(フルパス)
-        //特定のデータを追加
+        foreach(glob(storage_path("app/imagesDefault/")."/*",GLOB_ONLYDIR ) as $userdir){//ユーザ名のフォルダ(フルパス)
+            echo "check dir : ".$userdir."\n";
+            $firstname = explode("@", basename($userdir),2);
+            echo "MakeUser firstname: ".$firstname[0]."\n";
+            echo "MakeUser user id: ".basename($userdir)."\n";
             User::create([
-                'email'=>(string)($i+1045)."@gmail.com",
+                'email'=>basename($userdir),
                 'lastname'=>"東横",
-                'firstname'=>current($firstname),
+                'firstname'=>$firstname[0],
                 'password'=>"1045",
             ]);
         }

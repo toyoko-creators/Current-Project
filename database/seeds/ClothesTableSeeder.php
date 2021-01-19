@@ -14,20 +14,32 @@ class ClothesTableSeeder extends Seeder
     public function run()
     {
         //追加
-        foreach(glob('./imagesDefault/*',GLOB_ONLYDIR ) as $userdir){//ユーザ名のフォルダ(フルパス)
-            echo "check dir : ".basename($userdir);
+        /*foreach(glob(storage_path("app/imagesDefault").'/*',GLOB_ONLYDIR ) as $userdir){//ユーザ名のフォルダ(フルパス)
+            echo "check dir : ".$userdir."\n";
             foreach(glob(($userdir).'/*',GLOB_ONLYDIR ) as $weartypedir){//トップ、ボトムのフォルダ名探索
+                echo "check dir : ".$weartypedir."\n";
                 if(basename($weartypedir) !="Top" && basename($weartypedir) !="Bottom" ){continue;}//名前違いのものは無視
-                foreach(glob(($weartypedir).'/*',GLOB_ONLYDIR ) as $imagefile){//画像ファイル一覧取得
-                    $storagefileName = uniqid(mt_rand(), true);
-                    Storage::disk('public')->putFileAs("images/".basename($userdir)."/".basename($weartypedir),file($imagefile), $storagefileName);
+                foreach(glob(($weartypedir).'/*',GLOB_NOSORT ) as $imagefile){//画像ファイル一覧取得
+                    echo "\n";
+                    echo $imagefile;
+                    echo "\n";
+                    $uploadfileName = uniqid().".".pathinfo( $imagefile, PATHINFO_EXTENSION);
+                    $uploadfilepath = storage_path("/app/public".basename($userdir)."/".basename($weartypedir));
+                    echo "To   : ".$uploadfilepath."/".$uploadfileName."\n";
+                    echo "from : ".$imagefile."\n";
+                    echo "Upfilename : ".$uploadfileName."\n";
+                    $fromfile = Storage::get($imagefile);
+                    echo "Storage::get :Success\n";
+                    $fromfile->storeAs($uploadfilepath,$uploadfileName);
+                    echo "Storage::copy :Success\n";
                     Clothe::create([
-                        'ImageFile'=>$storagefileName,
+                        'ImageFile'=>$uploadfileName,
                         'email'=>basename($userdir),
                         'WearType'=>basename($weartypedir)
                     ]);
+                    echo "Clothe::create :Success\n";
                 }
             }
-        }
+        }*/
     }
 }
