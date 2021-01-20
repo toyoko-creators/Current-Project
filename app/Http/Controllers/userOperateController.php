@@ -44,10 +44,9 @@ class userOperateController extends Controller
         if($selectuser != null){
             // 値を保存
             Session::regenerate();
-            $data = [
-                'userid'=>Session::put('userid', $request->email)
-            ];
-            return view('/closet', $data);
+            Session::put('userid', $request->email);
+            return redirect('/closet');
+            //return view('/closet', $data);
         }
         else
         {

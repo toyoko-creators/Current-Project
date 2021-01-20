@@ -12,7 +12,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run(){
         User::truncate();
-        foreach(glob(storage_path("app/imagesDefault/")."/*",GLOB_ONLYDIR ) as $userdir){//ユーザ名のフォルダ(フルパス)
+        foreach(glob(storage_path("app/public/imagesDefault")."/*",GLOB_ONLYDIR ) as $userdir){//ユーザ名のフォルダ(フルパス)
             echo "check dir : ".$userdir."\n";
             $firstname = explode("@", basename($userdir),2);
             echo "MakeUser firstname: ".$firstname[0]."\n";
