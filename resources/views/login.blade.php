@@ -5,12 +5,14 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Login</title>
+        <script>
+            alert('{!! session('msg') !!}')
+        </script>
         <link rel="stylesheet" href="css/style.css" type="text/css">
     </head>
     <body>
         <div class="form-wrapper">
             <h1>My Coordination Editor</h1>
-            <p>{{ session('msg') }}</p>
             <form method="post" action="userLogin">
                 {{ csrf_field() }}
                 <div class="form-item">

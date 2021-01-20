@@ -9,6 +9,11 @@
         <link rel="stylesheet" href="css/style.css" type="text/css">
         <link rel="stylesheet" href="css/slick.css" type="text/css">
         <link rel="stylesheet" href="css/slick-theme.css" type="text/css">
+        @if( session('msg')!==NULL)
+        <script>
+            alert('{!! session('msg') !!}')
+        </script>
+        @endif
     </head>
     <body>
         <div id="container">
@@ -30,7 +35,6 @@
                     </div>
                 </form>
             </div>
-                <div>{{ session('msg') }}</div>
             <div id="Main_frame_tops">
                 @if(isset( $Topvalue ))
                     {!! $Topvalue !!}

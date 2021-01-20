@@ -17,19 +17,16 @@ class FavolistOperationController extends Controller
             return redirect('/login');
         }
         //暫定で最初のファイルで登録（上下登録している前提）
-        $FavCombo = null;
         $topfile = glob(storage_path("app/public/image/").Session::get('userid')."/Top/*",GLOB_NOSORT );
         $bottomfile = glob(storage_path("app/public/image/")."/".Session::get('userid')."/Bottom/*",GLOB_NOSORT );
         //            ->first();
-        //$FavCombo = Favolist::where('Topfile',$request->Top)
-        //            ->where('Bottomfile',$request->Bottom)
-        //            ->first();
-        if($FavCombo != null)
+        $FavCombo = Favolist::where('Topfile',basename($topfile[0]))
+                    ->where('BottomFile',basename($bottomfile[0]))
+                    ->get()
+                    ->first();
+        if(!empty($FavCombo))
         {
-            $data = [
-                'msg'=>"その組み合わせはすでに登録済みです"
-            ];
-            return view('closet', $data);
+            $msg = "その組み合わせはすでに登録済みです";
         }
         else
         {
@@ -42,16 +39,12 @@ class FavolistOperationController extends Controller
                     //'Bottomfile'=>$request->Bottom
                 ]);
             
-                $data = [
-                    'msg'=>'お気に入りに登録しました'
-                ];
+                $msg = 'お気に入りに登録しました';
             } catch (\Exception $e) {
-                $data = [
-                    'msg'=>"お気に入りに登録できませんでした:".$e->getMessage()
-                ];
+                $msg = "お気に入りに登録できませんでした:".$e->getMessage();
             }
-            return redirect('/closet')->with($data);
         }
+        return redirect('/closet')->with('msg',(string)$msg);
     }
     public function BottonSelector(Request $request) {
         if(!Session::has('userid')){

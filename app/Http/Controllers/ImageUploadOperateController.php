@@ -22,12 +22,12 @@ class ImageUploadOperateController extends Controller
                 'weartype'=>$request->weartype,
                 'message'=>"ファイルを選択して下さい"
             ];
-            return view('/imageupload', $data);
+            return redirect('/toimageupload')->with($data);
         }
         $FileName = uniqid().".".$UpFile->getClientOriginalExtension();
         $weartype = $request->weartype;
         if(empty($weartype)||empty($weartype)){
-            return view('/imageupload');
+            return redirect('/toimageupload')->with('weartype',$request->weartype);
         }
         try{
             $UpFile->storeAs("public/image/".$email."/".$weartype,$FileName);
@@ -41,7 +41,7 @@ class ImageUploadOperateController extends Controller
                 'weartype'=>$weartype,
                 'message'=>"画像の登録に失敗しました:".$weartype.":".$e->getMessage()
             ];
-            return view('/imageupload', $data);
+            return redirect('/toimageupload')->with($data);
         }
         try{
             Clothe::create([
@@ -49,6 +49,10 @@ class ImageUploadOperateController extends Controller
                 'email'=>Session::get('userid'),
                 'WearType'=>$weartype
             ]);
+            $data = [
+                'weartype'=>$weartype,
+                'message'=>'画像の登録が完了しました'
+            ];
         } catch (\Exception $e) {
             //DB登録失敗したので画像削除
             Storage::disk('local')->delete("public/".$email."/".$weartype.$FileName);
@@ -56,13 +60,8 @@ class ImageUploadOperateController extends Controller
                 'weartype'=>$weartype,
                 'message'=>"画像の登録に失敗しました\n".$e->getMessage()
             ];
-            return view('/imageupload', $data);
         }
-        $data = [
-            'weartype'=>$weartype,
-            'message'=>'画像の登録が完了しました'
-        ];
-        return view('/imageupload', $data);
+        return redirect('/toimageupload')->with($data);
     }
 
 }

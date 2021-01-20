@@ -37,19 +37,23 @@ Route::post('AddTop', 'userOperateController@register');
 Route::get('/favolist', 'FavolistOperationController@openPage');
 Route::get('/closet', 'ClosetOperateController@openPage');
 
-Route::get('/imageupload', function (Request $request) {
-    if( isset($request) && isset($request->weartype )){
-        $data = [
-            'weartype'=>$request->weartype
-        ];
+Route::get('/toimageupload', function () {
+    if( isset($request) && session::has('weartype') ){
+        $typevalue = session::get('weartype');
     }else{
-        $data = [
-            'weartype'=>"Top"
-        ];
+        $typevalue = "Top";
     }
-    
+
+    return redirect('/imageupload')->with('weartype',$typevalue);
+});
+
+Route::get('/imageupload', function () {
+        $data = [
+            'weartype'=>session::get("weartype")
+        ];
     return view('imageupload',$data);
 });
+
 
 Route::post('closetbutton',   'ClosetOperateController@BottonSelector');
 Route::post('favolistbutton', 'FavolistOperationController@BottonSelector');

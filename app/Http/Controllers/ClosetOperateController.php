@@ -18,21 +18,12 @@ class ClosetOperateController extends Controller
         if(!Session::has('userid')){
             return view('login');
         } elseif ($request->has('TopsButton')) {
-            $data = [
-                'weartype'=>"Top"
-            ];
-            return view('imageupload', $data);
+            return redirect('/toimageupload')->with('weartype',"Top");
         } elseif ($request->has('BottomsButton')) {
-            $data = [
-                'weartype'=>"Bottom"
-            ];
-            return view('/imageupload', $data);
+            return redirect('/toimageupload')->with('weartype',"Bottom");
         }elseif ($request->has('outfit')) {//お気に入り登録
-            $msg = FavolistOperationController::register( );
-            $data = [
-                'msg'=>$msg
-            ];            
-            return redirect('/closet')->with('msg', 'ユーザーを登録しました。');
+            FavolistOperationController::register( );
+            return redirect('/closet')->with('msg',session::get('msg'));
         }  elseif ($request->has('logout')) {
             Session::flush();
             return redirect('/logout');
