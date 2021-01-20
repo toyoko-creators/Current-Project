@@ -28,11 +28,7 @@ class userOperateController extends Controller
                 'password'=>$request->Password,
             ]);
             
-            $data = [
-                'msg'=>"ユーザーを登録しました。",
-                'email'=>$request->email,
-            ];
-            return view('login', $data);
+            return redirect('/login')->with('msg', 'ユーザーを登録しました。');
         }
     }
 
@@ -43,17 +39,12 @@ class userOperateController extends Controller
                          ->first();
         if($selectuser != null){
             // 値を保存
-            Session::regenerate();
             Session::put('userid', $request->email);
             return redirect('/closet');
-            //return view('/closet', $data);
         }
         else
         {
-            $data = [
-                'msg'=>"ユーザーが存在しません"
-            ];
-            return view('login', $data);
+            return redirect('/login')->with('msg', 'ユーザーが存在しません');
         }
     }
 }

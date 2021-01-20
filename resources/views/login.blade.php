@@ -10,9 +10,7 @@
     <body>
         <div class="form-wrapper">
             <h1>My Coordination Editor</h1>
-            @if(isset( $msg ))
-            <p>{{$msg}}</p>
-            @endif
+            <p>{{ session('msg') }}</p>
             <form method="post" action="userLogin">
                 {{ csrf_field() }}
                 <div class="form-item">

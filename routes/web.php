@@ -12,31 +12,43 @@
 */
 
 use Illuminate\Support\Facades\Session;
-Route::get('/', function () {
-    //return view('welcome');
-    return redirect('/login');
+use Illuminate\Http\Request;
+Route::get('/', function (Request $request) {
+    if( Session::has('userid')){
+        return redirect('/closet');
+    }else{
+        if( isset($request->msg )){
+            $textmsg = $request->msg;
+        }else{
+            $textmsg = "";
+        }
+        $data = [
+            'msg'=>$textmsg
+        ];
+        return redirect('/login',$data);
+    }
 });
 
-Route::get('/login', function () {
-    return view('login');
-});
-Route::get('/user', function () {
-    return view('user');
-});
 Route::post('userRegister', 'userOperateController@register');
 Route::post('userLogin', 'userOperateController@login');
 
 Route::post('AddTop', 'userOperateController@register');
 
-Route::get('/favlist', 'FavolistOperationController@openPage');
+Route::get('/favolist', 'FavolistOperationController@openPage');
 Route::get('/closet', 'ClosetOperateController@openPage');
 
-Route::get('/imageupload', function () {
-    return view('imageupload');
-});
-Route::get('/logout', function () {
-    Session::flush();
-    return view('login');
+Route::get('/imageupload', function (Request $request) {
+    if( isset($request) && isset($request->weartype )){
+        $data = [
+            'weartype'=>$request->weartype
+        ];
+    }else{
+        $data = [
+            'weartype'=>"Top"
+        ];
+    }
+    
+    return view('imageupload',$data);
 });
 
 Route::post('closetbutton',   'ClosetOperateController@BottonSelector');
@@ -46,6 +58,21 @@ Route::get('favoregedit', 'FavolistOperationController@regedit');
 Route::post('imageUpload', 'ImageUploadOperateController@register');
 
 
-Route::get('/userLogin',function(){
+Route::get('/logout', function () {
+    Session::flush();
     return redirect('/login');
+});
+Route::get('/userLogin',function(){
+
+    if( Session::has('userid')){
+        return redirect('/closet');
+    }else{
+        return redirect('/login');
+    }
+});
+Route::get('/login', function () {
+    return view('login');
+})->name('loginwithmsg');;
+Route::get('/user', function () {
+    return view('user');
 });

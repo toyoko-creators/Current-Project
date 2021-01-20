@@ -14,7 +14,7 @@ class ImageUploadOperateController extends Controller
         $email = Session::get('userid');
         if(empty($email)){
             Session::flush();
-            return view('/login');
+            return redirect('/login');
         }
         $UpFile = $request->image;
         if(empty($UpFile)){

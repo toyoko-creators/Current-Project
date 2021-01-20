@@ -14,7 +14,7 @@ class FavolistOperationController extends Controller
     public static function register()
     {
         if(!Session()->has('userid')){
-            return view('/login');
+            return redirect('/login');
         }
         //暫定で最初のファイルで登録（上下登録している前提）
         $FavCombo = null;
@@ -50,27 +50,30 @@ class FavolistOperationController extends Controller
                     'msg'=>"お気に入りに登録できませんでした:".$e->getMessage()
                 ];
             }
-            return view('closet',$data);
+            return redirect('/closet')->with($data);
         }
     }
     public function BottonSelector(Request $request) {
-        if(!isset($request) && !Session::has('userid')){
-            return view('login');
+        if(!Session::has('userid')){
+            return redirect('/login');
         } elseif ($request->has('TopPage')) {
-            return view('closet');
+            return redirect('/closet');
         } elseif ($request->has('DeleteCollection')) {
             //お気に入り削除処理(機能なし)
-            return view('favolist');
+            return redirect('/favolist');
         } elseif ($request->has('logout')) {
             Session::flush();
-            return view('login');
+            return redirect('/login');
         }else{
             Session::flush();
-            return view('login');
+            return redirect('/login');
         }
     }
 
     public function openPage(){
+        if(!Session::has('userid')){
+            return redirect('/login');
+        }
         $email = Session::get('userid');
         $favitems = Favolist::select('TopFile','BottomFile')
         //->where('email', (string)$email)
@@ -81,9 +84,9 @@ class FavolistOperationController extends Controller
                 $slickdivValue ="";
             };
             $Toptargetfilepath = url(Storage::disk('local')->url("image/".$email."/Top/".$row['TopFile']));
-            $slickValueTop = '<img src="'.$Toptargetfilepath.'" alt="'.$row['TopFile'].'"   width="300" height="300">>';
+            $slickValueTop = '<img src="'.$Toptargetfilepath.'" alt="'.$row['TopFile'].'"   width="300" height="300">';
             $Bottomtargetfilepath = url(Storage::disk('local')->url("image/".$email."/Bottom/".$row['BottomFile']));
-            $slickValueBottom = '<img src="'.$Bottomtargetfilepath.'" alt="'.$row['BottomFile'].'"  width="300" height="300">>';
+            $slickValueBottom = '<img src="'.$Bottomtargetfilepath.'" alt="'.$row['BottomFile'].'"  width="300" height="300">';
             $slickdivValue .= '<span>"'.$slickValueTop.$slickValueBottom.'</span>';
         }
         if(!isset($slickdivValue)){

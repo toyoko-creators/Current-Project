@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>My Cordination Editor</title>
+        <title>{{ config('app.name') }}</title>
         <link rel="stylesheet" href="css/app.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
         <link rel="stylesheet" href="css/slick.css" type="text/css">
@@ -30,9 +30,7 @@
                     </div>
                 </form>
             </div>
-                @if(isset( $msg ))
-                <div>{{$msg}}</div>
-                @endif
+                <div>{{ session('msg') }}</div>
             <div id="Main_frame_tops">
                 @if(isset( $Topvalue ))
                     {!! $Topvalue !!}

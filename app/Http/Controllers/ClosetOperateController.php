@@ -15,7 +15,7 @@ class ClosetOperateController extends Controller
 
 
     public function BottonSelector(Request $request) {
-        if(!isset($request) && !Session::has('userid')){
+        if(!Session::has('userid')){
             return view('login');
         } elseif ($request->has('TopsButton')) {
             $data = [
@@ -26,21 +26,28 @@ class ClosetOperateController extends Controller
             $data = [
                 'weartype'=>"Bottom"
             ];
-            return view('imageupload', $data);
-        }elseif ($request->has('outfit')) {
-            FavolistOperationController::register( );
-            return view('closet' );
+            return view('/imageupload', $data);
+        }elseif ($request->has('outfit')) {//お気に入り登録
+            $msg = FavolistOperationController::register( );
+            $data = [
+                'msg'=>$msg
+            ];            
+            return redirect('/closet')->with('msg', 'ユーザーを登録しました。');
         }  elseif ($request->has('logout')) {
             Session::flush();
             return redirect('/logout');
         }  elseif ($request->has('closet')) {
-            
+            return redirect('/favolist');
         }else{
+            Session::flush();
             return redirect('/logout');
         }
     }
 
     public function openPage(){
+        if(!Session::has('userid')){
+            return redirect('/login');
+        }
         $email = Session::get('userid');
         $topclothes = Clothe::select('ImageFile')
         ->where('email', (string)$email)
