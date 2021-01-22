@@ -17,12 +17,12 @@
             <form action="favolistbutton" method="POST">
                 {{ csrf_field() }}
                     <div class="button-normal">
-                        <input type="submit" name="TopPage" value="Topに戻る">
+                        <input type="submit" name="TopPage"class="button"  value="Topに戻る">
                     </div>
                     <div class="button-normal">
-                        <input type="submit"  name="DeleteCollection" value="お気に入り削除">
+                        <input type="submit"  name="DeleteCollection" class="button" value="お気に入り削除">
                     </div>
-                    <div class="button-normal">
+                    <div class="button-normal Pos-Lowerleft">
                         <input type="submit" name="logout" value="ログアウト">
                     </div>
                 </form>

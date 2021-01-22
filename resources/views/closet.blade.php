@@ -15,16 +15,21 @@
         </script>
         @endif
     </head>
+    <style>
+    .focused {
+        border-bottom-color: #ff0000;
+    }
+    </style>
     <body>
         <div id="container">
             <div id="Menu_frame">
-            <form action="closetbutton" method="POST">
+            <form action="closetbutton" method="POST" enctype='multipart/form-data'>
                 {{ csrf_field() }}
                     <div class="button-normal">
-                        <input type="submit" name="closet" value="クローゼット">
+                        <input type="submit" class="button" name="closet" value="クローゼット">
                     </div>
                     <div class="button-normal">
-                        <input type="submit"  name="outfit" value="コーディネート保存">
+                        <input type="submit"  class="button" name="outfit" value="コーディネート保存">
                     </div>
                     <div class="button-normal">
                         <input type="submit" class="button" name="TopsButton" value="トップス選択">
@@ -46,6 +51,14 @@
                 @endif
             </div>
         </div>
+        <script>
+        $( "#Main_frame_tops" ).delegate( "*", "focus blur", function( event ) {
+        var elem = $( this );
+        setTimeout(function() {
+            elem.toggleClass( "focused", elem.is( ":focus" ) );
+        }, 0);
+        });
+        </script>
         <script src="js/jquery-3.5.1.js"></script>
         <script src="js/jquery-migrate-1.2.1.min.js"></script>
         <script src="js/slick.min.js"></script>

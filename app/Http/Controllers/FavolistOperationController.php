@@ -24,7 +24,10 @@ class FavolistOperationController extends Controller
                     ->where('BottomFile',basename($bottomfile[0]))
                     ->get()
                     ->first();
-        if(!empty($FavCombo))
+        if($topfile ==""||$bottomfile==""){//1個もファイルがない時
+            return redirect('/closet');
+        }
+        if($FavCombo==NULL)
         {
             $msg = "その組み合わせはすでに登録済みです";
         }
@@ -46,7 +49,7 @@ class FavolistOperationController extends Controller
         }
         return redirect('/closet')->with('msg',(string)$msg);
     }
-    public function BottonSelector(Request $request) {
+    public function ButtonSelector(Request $request) {
         if(!Session::has('userid')){
             return redirect('/login');
         } elseif ($request->has('TopPage')) {

@@ -13,7 +13,7 @@
 
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
-Route::get('/', function (Request $request) {
+Route::get('/', function (Request $request=NULL) {
     if( Session::has('userid')){
         return redirect('/closet');
     }else{
@@ -55,8 +55,8 @@ Route::get('/imageupload', function () {
 });
 
 
-Route::post('closetbutton',   'ClosetOperateController@BottonSelector');
-Route::post('favolistbutton', 'FavolistOperationController@BottonSelector');
+Route::post('closetbutton',   'ClosetOperateController@ButtonSelector');
+Route::post('favolistbutton', 'FavolistOperationController@ButtonSelector');
 Route::get('favoregedit', 'FavolistOperationController@regedit');
 
 Route::post('imageUpload', 'ImageUploadOperateController@register');

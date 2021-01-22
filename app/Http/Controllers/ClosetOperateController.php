@@ -14,7 +14,7 @@ class ClosetOperateController extends Controller
 {
 
 
-    public function BottonSelector(Request $request) {
+    public function ButtonSelector(Request $request) {
         if(!Session::has('userid')){
             return view('login');
         } elseif ($request->has('TopsButton')) {
