@@ -11,25 +11,20 @@
         <link rel="stylesheet" href="css/slick-theme.css" type="text/css">
         @if( session('msg')!==NULL)
         <script>
-            alert('{!! session('msg') !!}')
+            alert('{!! session("msg") !!}');
         </script>
         @endif
     </head>
-    <style>
-    .focused {
-        border-bottom-color: #ff0000;
-    }
-    </style>
     <body>
         <div id="container">
             <div id="Menu_frame">
-            <form action="closetbutton" method="POST" enctype='multipart/form-data'>
-                {{ csrf_field() }}
+                <form action="closetbutton" method="POST" enctype='multipart/form-data'>
+                    {{ csrf_field() }}
                     <div class="button-normal">
                         <input type="submit" class="button" name="closet" value="クローゼット">
                     </div>
                     <div class="button-normal">
-                        <input type="submit"  class="button" name="outfit" value="コーディネート保存">
+                        <button type="button" id="outfit" class="button" name="outfit" value="コーディネート保存" onclick="savefav()">コーディネート保存</botton>
                     </div>
                     <div class="button-normal">
                         <input type="submit" class="button" name="TopsButton" value="トップス選択">
@@ -51,17 +46,10 @@
                 @endif
             </div>
         </div>
-        <script>
-        $( "#Main_frame_tops" ).delegate( "*", "focus blur", function( event ) {
-        var elem = $( this );
-        setTimeout(function() {
-            elem.toggleClass( "focused", elem.is( ":focus" ) );
-        }, 0);
-        });
-        </script>
         <script src="js/jquery-3.5.1.js"></script>
         <script src="js/jquery-migrate-1.2.1.min.js"></script>
         <script src="js/slick.min.js"></script>
         <script src="js/common.js"></script>
+        <script src="js/fav.js"></script>
     </body>
 </html>

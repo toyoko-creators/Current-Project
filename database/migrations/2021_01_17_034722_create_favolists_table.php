@@ -14,9 +14,10 @@ class CreateFavolistsTable extends Migration
     public function up()
     {
         Schema::create('favolists', function (Blueprint $table) {
+            $table->unsignedInteger('ID')->autoIncrement();
             $table->string('email', 100);
-            $table->string('TopFile', 256)->references('ImageFile')->on('clothes')->onDelete('cascade');
-            $table->string('BottomFile', 256)->references('ImageFile')->on('clothes')->onDelete('cascade');
+            $table->string('TopFile', 256);
+            $table->string('BottomFile', 256);
             $table->timestamps();
         });
     }

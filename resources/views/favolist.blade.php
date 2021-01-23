@@ -9,6 +9,11 @@
         <link rel="stylesheet" href="css/style.css" type="text/css">
         <link rel="stylesheet" href="css/slick.css" type="text/css">
         <link rel="stylesheet" href="css/slick-theme.css" type="text/css">
+        @if( session('msg')!==NULL)
+        <script>
+            alert('{!! session("msg") !!}');
+        </script>
+        @endif
     </head>
     <body>
         <div id="container">
@@ -20,7 +25,7 @@
                         <input type="submit" name="TopPage"class="button"  value="Topに戻る">
                     </div>
                     <div class="button-normal">
-                        <input type="submit"  name="DeleteCollection" class="button" value="お気に入り削除">
+                        <button type="button" id="DeleteCollection" class="button" name="DeleteCollection" value="お気に入り削除" onclick="delfav()">お気に入り削除</botton>
                     </div>
                     <div class="button-normal Pos-Lowerleft">
                         <input type="submit" name="logout" value="ログアウト">
@@ -38,5 +43,6 @@
         <script src="js/jquery-migrate-1.2.1.min.js"></script>
         <script src="js/slick.min.js"></script>
         <script src="js/common.js"></script>
+        <script src="js/fav.js"></script>
     </body>
 </html>

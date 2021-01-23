@@ -10,23 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 use Illuminate\Support\Facades\Session;
-use Illuminate\Http\Request;
-Route::get('/', function (Request $request=NULL) {
-    if( Session::has('userid')){
-        return redirect('/closet');
-    }else{
-        if( isset($request->msg )){
-            $textmsg = $request->msg;
-        }else{
-            $textmsg = "";
-        }
-        $data = [
-            'msg'=>$textmsg
-        ];
-        return redirect('/login',$data);
-    }
+Route::get('/', function () {
+        return redirect('/userLogin');
 });
 
 Route::post('userRegister', 'userOperateController@register');
@@ -34,11 +20,11 @@ Route::post('userLogin', 'userOperateController@login');
 
 Route::post('AddTop', 'userOperateController@register');
 
-Route::get('/favolist', 'FavolistOperationController@openPage');
-Route::get('/closet', 'ClosetOperateController@openPage');
+Route::get('/favolist', 'ViewpageController@favPaveopenPage');
+Route::get('/closet', 'ViewpageController@closetopenPage');
 
 Route::get('/toimageupload', function () {
-    if( isset($request) && session::has('weartype') ){
+    if( session::has('weartype') ){
         $typevalue = session::get('weartype');
     }else{
         $typevalue = "Top";
@@ -57,7 +43,17 @@ Route::get('/imageupload', function () {
 
 Route::post('closetbutton',   'ClosetOperateController@ButtonSelector');
 Route::post('favolistbutton', 'FavolistOperationController@ButtonSelector');
-Route::get('favoregedit', 'FavolistOperationController@regedit');
+Route::get('/favoregedit/{Topfile}/{Bottomfile}', 'FavolistOperationController@register');
+Route::get('/favoregedit/{aaaa}', function(){
+        return redirect('/userLogin');
+});
+Route::get('/favdelete/{targetId}', 'FavolistOperationController@delete');
+Route::get('/favdelete', function(){
+        return redirect('/userLogin');
+});
+Route::get('/favoregedit', function(){
+        return redirect('/userLogin');
+});
 
 Route::post('imageUpload', 'ImageUploadOperateController@register');
 

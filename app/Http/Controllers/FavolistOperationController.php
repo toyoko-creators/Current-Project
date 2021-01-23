@@ -6,57 +6,90 @@ use App\Clothe;
 use App\Favolist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
 
 class FavolistOperationController extends Controller
 {
     //
-    public static function register()
+    public static function register($Topfile,$Bottomfile)
     {
         if(!Session()->has('userid')){
             return redirect('/login');
         }
-        //暫定で最初のファイルで登録（上下登録している前提）
-        $topfile = glob(storage_path("app/public/image/").Session::get('userid')."/Top/*",GLOB_NOSORT );
-        $bottomfile = glob(storage_path("app/public/image/")."/".Session::get('userid')."/Bottom/*",GLOB_NOSORT );
-        //            ->first();
-        $FavCombo = Favolist::where('Topfile',basename($topfile[0]))
-                    ->where('BottomFile',basename($bottomfile[0]))
-                    ->get()
-                    ->first();
-        if($topfile ==""||$bottomfile==""){//1個もファイルがない時
-            return redirect('/closet');
+        if(empty($Topfile) || empty($Bottomfile)){
+            return redirect('/closet')->with('msg',"画像を選択してください");
         }
-        if($FavCombo==NULL)
-        {
-            $msg = "その組み合わせはすでに登録済みです";
-        }
-        else
-        {
-            try{
-                Favolist::create([
-                    'email'=>Session::get('userid'),
-                    'TopFile'=>basename($topfile[0]),
-                    'BottomFile'=>basename($bottomfile[0])
-                    //'Topfile'=>$request->Top,
-                    //'Bottomfile'=>$request->Bottom
-                ]);
-            
-                $msg = 'お気に入りに登録しました';
-            } catch (\Exception $e) {
-                $msg = "お気に入りに登録できませんでした:".$e->getMessage();
+        try{
+            $clothCheckTop = Clothe::where('WearType','Top')
+                        ->where('ImageFile',$Topfile)
+                        ->where('email',Session()->get('userid'))
+                        ->get()
+                        ->first();
+            $clothCheckBottom = Clothe::where('WearType','Bottom')
+                        ->where('ImageFile',$Bottomfile)
+                        ->where('email',Session()->get('userid'))
+                        ->get()
+                        ->first();
+            if(!$clothCheckTop || !$clothCheckBottom){
+                return redirect('/closet')->with('msg',"エラーが発生しました。再度選択してください。");
             }
+
+            $FavCombo = Favolist::where('TopFile',$Topfile)
+                        ->where('BottomFile',$Bottomfile)
+                        ->get()
+                        ->first();
+            if($FavCombo)
+            {
+                $msg = "その組み合わせはすでに登録済みです";
+            }
+            else
+            {
+                    Favolist::create([
+                        'email'=>(string)Session::get('userid'),
+                        'TopFile'=>$Topfile,
+                        'BottomFile'=>$Bottomfile
+                    ]);
+                
+                    $msg = 'お気に入りに登録しました';
+            }
+        } catch (\Exception $e) {
+            $msg = "お気に入りに登録できませんでした。再度実行してください";
         }
         return redirect('/closet')->with('msg',(string)$msg);
+        //return $Resultdata;
     }
+
+
+    
+    public static function delete($targetId)
+    {   
+        if(!Session()->has('userid')){
+            return redirect('/login');
+        }
+        if(empty($targetId) ){
+                return redirect('/favolist')->with('msg',"エラーが発生しました。再度選択してください。");
+        }
+        try{
+            $IDCheckTop = Favolist::where('ID',(int)$targetId)
+                        ->where('email',Session()->get('userid'))
+                        ->get()
+                        ->first();
+            if(!$IDCheckTop){
+                return redirect('/favolist')->with('msg',"エラーが発生しました。再度選択してください。");
+            }
+                Favolist::where('ID',(int)$targetId)
+                        ->delete();
+                $msg = 'お気に入りから削除しました';
+        } catch (\Exception $e) {
+            return redirect('/favolist')->with('msg',"エラーが発生しました。再度選択してください。");
+        }
+        return redirect('/favolist')->with('msg',(string)$msg);
+    }
+
     public function ButtonSelector(Request $request) {
         if(!Session::has('userid')){
             return redirect('/login');
         } elseif ($request->has('TopPage')) {
             return redirect('/closet');
-        } elseif ($request->has('DeleteCollection')) {
-            //お気に入り削除処理(機能なし)
-            return redirect('/favolist');
         } elseif ($request->has('logout')) {
             Session::flush();
             return redirect('/login');
@@ -66,33 +99,4 @@ class FavolistOperationController extends Controller
         }
     }
 
-    public function openPage(){
-        if(!Session::has('userid')){
-            return redirect('/login');
-        }
-        $email = Session::get('userid');
-        $favitems = Favolist::select('TopFile','BottomFile')
-        //->where('email', (string)$email)
-        ->get()
-        ->toArray();
-        foreach ($favitems as $row){
-            if(!isset($slickdivValue)){
-                $slickdivValue ="";
-            };
-            $Toptargetfilepath = url(Storage::disk('local')->url("image/".$email."/Top/".$row['TopFile']));
-            $slickValueTop = '<img src="'.$Toptargetfilepath.'" alt="'.$row['TopFile'].'"   width="300" height="300">';
-            $Bottomtargetfilepath = url(Storage::disk('local')->url("image/".$email."/Bottom/".$row['BottomFile']));
-            $slickValueBottom = '<img src="'.$Bottomtargetfilepath.'" alt="'.$row['BottomFile'].'"  width="300" height="300">';
-            $slickdivValue .= '<span>"'.$slickValueTop.$slickValueBottom.'</span>';
-        }
-        if(!isset($slickdivValue)){
-            $slickdivValue ='<p>1つもお気に入り登録されていません</p>';
-        }else{
-            $slickdivValue ='<div class="slickSet">'.$slickdivValue.'</div>';
-        }
-        $data = [
-            'slick1divValue'=>$slickdivValue
-        ];
-        return view('favolist',$data);
-    }
 }

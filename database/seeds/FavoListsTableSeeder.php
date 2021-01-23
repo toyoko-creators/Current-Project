@@ -13,10 +13,10 @@ class FavoListsTableSeeder extends Seeder
     public function run(){
         Favolist::truncate();
         //特定のデータを追加
-        Favolist::create([
-            'email'=>"1045@gmail.com",
-            'TopFile'=>"0.png",
-            'BottomFile'=>"0.png",
-        ]);
+        //Favolist::create([
+        //    'email'=>"1045@gmail.com",
+        //    'TopFile'=>"0.png",
+        //    'BottomFile'=>"0.png",
+        //]);
     }
 }
