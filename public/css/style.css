@@ -169,7 +169,8 @@ p.imagelist img {
 
 /* 左下位置固定 */
 .Pos-Lowerleft{
-  position: absolute;	// 絶対位置
-  left: 0px;
-  bottom: 0px;
+  position: absolute;	 /* 絶対位置 */
+  letter-spacing: 0.05em;
+  bottom: 20%;
+  
 }
