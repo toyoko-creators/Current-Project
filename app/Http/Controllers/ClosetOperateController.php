@@ -25,11 +25,11 @@ class ClosetOperateController extends Controller
         }  elseif ($request->has('closet')) {
             return redirect('/favolist');
         }  elseif ($request->has('TopUpload')) {
-            $data = ClosetOperateController::imageUpload($request->uploadTopFile, "Top");
-            return redirect('/closet');
+            $data = $this::imageUpload($request->uploadTopFile, "Top");
+            return redirect('/closet')->with('msg', $data['message']);
         }  elseif ($request->has('BottomUpload')) {
-            $data = ClosetOperateController::imageUpload($request->uploadButtomFile, "Bottom");
-            return redirect('/closet');
+            $data = $this::imageUpload($request->uploadButtomFile, "Bottom");
+            return redirect('/closet')->with('msg', $data['message']);
         }else{
             Session::flush();
             return redirect('/logout');
