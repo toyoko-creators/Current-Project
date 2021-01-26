@@ -22,13 +22,13 @@
             <form action="favolistbutton" method="POST">
                 {{ csrf_field() }}
                     <div class="button-normal">
-                        <input type="submit" name="TopPage"class="button"  value="Topに戻る">
+                        <input type="submit" name="TopPage" class="button"  value="Topに戻る">
                     </div>
                     <div class="button-normal">
                         <button type="button" id="DeleteCollection" class="button" name="DeleteCollection" value="お気に入り削除" onclick="delfav()">お気に入り削除</botton>
                     </div>
                     <div class="button-normal Pos-Lowerleft">
-                        <input type="submit" name="logout" value="ログアウト">
+                        <input type="submit" class="button" name="logout" value="ログアウト">
                     </div>
                 </form>
             </div>

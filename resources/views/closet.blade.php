@@ -26,12 +26,27 @@
                     <div class="button-normal">
                         <button type="button" id="outfit" class="button" name="outfit" value="コーディネート保存" onclick="savefav()">コーディネート保存</botton>
                     </div>
-                    <div class="button-normal">
+<!--                    <div class="button-normal">
                         <input type="submit" class="button" name="TopsButton" value="トップス選択">
                         <input type="submit" class="button" name="BottomsButton"  value="ボトムス選択">
                     </div>
+-->
+                    <div class="button-normal">
+                        <label>
+                            トップス選択
+                            <input type="file" name="uploadTopFile" accept="image/png" style="display:none">
+                            <input type="submit" class="submit" name="TopUpload" value="Upload">
+                        </label>
+                    </div>
+                    <div class="button-normal">
+                        <label>
+                            ボトムス選択
+                            <input type="file" name="uploadButtomFile" accept="image/png" style="display:none">
+                            <input type="submit" class="submit" name="BottomUpload" value="Upload">
+                        </label>
+                    </div>
                     <div class="button-normal Pos-Lowerleft">
-                        <input type="submit" name="logout" value="ログアウト">
+                        <input type="submit" class="button" name="logout" value="ログアウト">
                     </div>
                 </form>
             </div>

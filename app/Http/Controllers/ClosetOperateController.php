@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Clothe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 
 class ClosetOperateController extends Controller
@@ -22,10 +24,65 @@ class ClosetOperateController extends Controller
             return redirect('/logout');
         }  elseif ($request->has('closet')) {
             return redirect('/favolist');
+        }  elseif ($request->has('TopUpload')) {
+            $data = ClosetOperateController::imageUpload($request->uploadTopFile, "Top");
+            return redirect('/closet');
+        }  elseif ($request->has('BottomUpload')) {
+            $data = ClosetOperateController::imageUpload($request->uploadButtomFile, "Bottom");
+            return redirect('/closet');
         }else{
             Session::flush();
             return redirect('/logout');
         }
+    }
+
+    private static function imageUpload($UpFile, $weartype)
+    {
+        $email = Session::get('userid');
+        if(empty($email)){
+            Session::flush();
+            return;
+        }
+        if(empty($UpFile)){
+            $data = [
+                'weartype'=>$weartype,
+                'message'=>"ファイルを選択して下さい"
+            ];
+            return $data;
+        }
+        $FileName = uniqid().".".$UpFile->getClientOriginalExtension();
+        try{
+            $UpFile->storeAs("public/image/".$email."/".$weartype,$FileName);
+            $data = [
+                'weartype'=>$weartype,
+                'message'=>"images/".$email."/".$weartype,$FileName
+            ];
+        } catch (\Exception $e) {
+            $data = [
+                'weartype'=>$weartype,
+                'message'=>"画像の登録に失敗しました:".$weartype.":".$e->getMessage()
+            ];
+            return $data;
+        }
+        try{
+            Clothe::create([
+                'ImageFile'=>$FileName,
+                'email'=>Session::get('userid'),
+                'WearType'=>$weartype
+            ]);
+            $data = [
+                'weartype'=>$weartype,
+                'message'=>'画像の登録が完了しました'
+            ];
+        } catch (\Exception $e) {
+            //DB登録失敗したので画像削除
+            Storage::disk('local')->delete("public/".$email."/".$weartype.$FileName);
+            $data = [
+                'weartype'=>$weartype,
+                'message'=>"画像の登録に失敗しました\n".$e->getMessage()
+            ];
+        }
+        return $data;
     }
 
  /*   public function openPage()
