@@ -44,5 +44,10 @@
         <script src="js/slick.min.js"></script>
         <script src="js/common.js"></script>
         <script src="js/fav.js"></script>
+        @if(!empty( $defaultid ))
+        <script>
+            selectid = "{!! $defaultid !!}";
+        </script>
+        @endif
     </body>
 </html>

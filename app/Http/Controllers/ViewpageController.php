@@ -88,6 +88,7 @@ class ViewpageController extends Controller
             foreach ($favitems as $row){
                 if(!isset($slickdivValue)){
                     $slickdivValue ="";
+                    $defaultid = (String)$row['ID'];
                 };
                 $Toptargetfilepath = url(Storage::disk('local')->url("image/".$email."/Top/".$row['TopFile']));
                 $slickValueTop = '<img src="'.$Toptargetfilepath.'" alt="'.$row['TopFile'].'"   width="300" height="300">';
@@ -98,11 +99,13 @@ class ViewpageController extends Controller
         }
         if(!isset($slickdivValue)){
             $slickdivValue ='<p>1つもお気に入り登録されていません</p>';
+            $defaultid = "";
         }else{
             $slickdivValue ='<div class="slickSet">'.$slickdivValue.'</div>';
         }
         $data = [
-            'slick1divValue'=>$slickdivValue
+            'slick1divValue'=>$slickdivValue,
+            'defaultid'=>$defaultid
         ];
         return view('favolist',$data);
     }

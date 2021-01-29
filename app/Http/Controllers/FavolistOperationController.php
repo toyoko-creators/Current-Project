@@ -30,7 +30,8 @@ class FavolistOperationController extends Controller
                         ->get()
                         ->first();
             if(!$clothCheckTop || !$clothCheckBottom){
-                return redirect('/closet')->with('msg',"エラーが発生しました。再度選択してください。");
+                $data = [ "message" => "エラーが発生しました。再度選択してください。"];
+                return redirect('/closet')->with('msg', $data['message']);
             }
 
             $FavCombo = Favolist::where('TopFile',$Topfile)
@@ -39,7 +40,7 @@ class FavolistOperationController extends Controller
                         ->first();
             if($FavCombo)
             {
-                $msg = "その組み合わせはすでに登録済みです";
+                $data = [ "message" => "その組み合わせはすでに登録済みです"];
             }
             else
             {
@@ -49,12 +50,13 @@ class FavolistOperationController extends Controller
                         'BottomFile'=>$Bottomfile
                     ]);
                 
-                    $msg = 'お気に入りに登録しました';
+                    $data = [ "message" => "お気に入りに登録しました"];
             }
         } catch (\Exception $e) {
-            $msg = "お気に入りに登録できませんでした。再度実行してください";
+             $data = [ "message" => "お気に入りに登録できませんでした。再度実行してください"];
+            return redirect('/closet')->with('msg', $data['message']);
         }
-        return redirect('/closet')->with('msg',(string)$msg);
+        return redirect('/closet')->with('msg', $data['message']);
         //return $Resultdata;
     }
 

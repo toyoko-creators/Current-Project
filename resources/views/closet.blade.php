@@ -66,5 +66,15 @@
         <script src="js/slick.min.js"></script>
         <script src="js/common.js"></script>
         <script src="js/fav.js"></script>
+        @if(!empty( $topfirst ))
+        <script>
+          topfilename = "{!! $topfirst !!}";
+        </script>
+        @endif
+        @if(!empty( $bottomfirst ))
+        <script>
+          bottomfilename = "{!! $bottomfirst !!}";
+        </script>
+        @endif
     </body>
 </html>
